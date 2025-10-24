@@ -101,6 +101,52 @@ hexagonal-ddd-api-first-spring-boot-sample/
   - config: infrastructure configuration (WebFlux, beans, properties)
 
 
+## Hexagonal architecture diagram
+
+Below is a high-level Hexagonal (Ports & Adapters) view showing the core hexagon, ports, adapters, and layers.
+
+```mermaid
+flowchart LR
+  %% Core hexagon (conceptual)
+  subgraph Core[Hexagon Core]
+    direction TB
+    subgraph Application[Application Layer]
+      IP[Input Ports - port.in]
+      UC[Use Cases]
+      OP[Output Ports - port.out]
+      IP --> UC
+      UC --> OP
+    end
+
+    subgraph Domain[Domain Layer]
+      DM[Aggregates, Entities, Value Objects]
+      DS[Domain Services]
+      DR[Domain Repository Abstractions]
+      UC --> DM
+      UC --> DS
+    end
+  end
+
+  %% Inbound/outbound adapters and external world
+  Client[Client] --> InAdapter[Inbound Adapter - Web or Controller]
+  InAdapter --> IP
+  OP --> OutAdapter[Outbound Adapter - Persistence/HTTP/Messaging]
+  OutAdapter --> Ext[Database and Other Services]
+
+  %% Styling to highlight layers and dependency rule
+  classDef adapter fill:#e8f0ff,stroke:#2f4b8f,stroke-width:1px;
+  classDef core fill:#e9f9ef,stroke:#2f8f4b,stroke-width:1px;
+  classDef app fill:#ffffff,stroke:#2f8f4b,stroke-dasharray: 3 3;
+  classDef domain fill:#ffffff,stroke:#2f8f4b,stroke-dasharray: 3 3;
+
+  class InAdapter,OutAdapter adapter;
+  class Core core;
+  class Application app;
+  class Domain domain;
+```
+
+Key: adapters depend inward on ports; the core never depends on adapters.
+
 ## End‑to‑end flow
 
 A request travels from the outside world through inbound adapters into the core (application + domain), and results travel back out the same path. Ports (interfaces) sit at the core boundary; adapters implement or call those ports.
