@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.spectrayan'
+version = '0.0.1-SNAPSHOT'
+
+def javaVersion = JavaVersion.VERSION_21
+
+java {
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+}
+
+subprojects { sub ->
+    apply plugin: 'java'
+
+    group = rootProject.group
+    version = rootProject.version
+
+    java {
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+}

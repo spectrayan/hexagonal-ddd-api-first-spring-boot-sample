@@ -1,0 +1,39 @@
+plugins {
+    id 'java-library'
+    id 'org.openapi.generator' version '7.8.0'
+}
+
+dependencies {
+    // Placeholders for generated DTO usage; add as needed later
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += ["${buildDir}/generated/sources/openapi/main/src"]
+        }
+        resources {
+            srcDirs += ["src/main/resources"]
+        }
+    }
+}
+
+openApiGenerate {
+    generatorName = 'spring'
+    inputSpec = "$projectDir/src/main/resources/openapi/openapi.yaml"
+    outputDir = "$buildDir/generated/sources/openapi/main"
+    apiPackage = 'com.spectrayan.common.api'
+    modelPackage = 'com.spectrayan.common.dto'
+    invokerPackage = 'com.spectrayan.common.invoker'
+    library = 'webflux'
+    configOptions = [
+        dateLibrary: 'java8',
+        useTags: 'true',
+        interfaceOnly: 'true',
+        useSpringBoot3: 'true',
+        hideGenerationTimestamp: 'true'
+    ]
+}
+
+// Ensure code generation runs before compilation when needed
+compileJava.dependsOn tasks.named('openApiGenerate')

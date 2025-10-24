@@ -1,0 +1,16 @@
+openapi: 3.0.3
+info:
+  title: Common Schemas for Intake API
+  version: 0.1.0
+  description: |
+    Placeholder OpenAPI document holding shared schemas for the "intake" bounded context.
+    Actual endpoints will live in service-specific modules. DTOs will be generated
+    from these schemas using the OpenAPI Generator.
+servers: []
+paths: {}
+components:
+  schemas:
+    ExampleId:
+      type: string
+      format: uuid
+      description: "Identifier used across services"
